@@ -3,295 +3,171 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ asset('layouts/dashboard.css') }}">
     <title>AI Prediction Dashboard</title>
-    <style>
-        /* ===== GLOBAL STYLES ===== */
-        * {
-          margin: 0;
-          padding: 0;
-          box-sizing: border-box;
-        }
-
-        :root {
-          --bg-primary: #0f0f0f;
-          --bg-secondary: #1a1a1a;
-          --bg-tertiary: #242424;
-          --text-primary: #f5f5f5;
-          --text-secondary: #a0a0a0;
-          --accent: #6366f1;
-          --accent-light: #818cf8;
-          --border: #333333;
-          --success: #10b981;
-          --radius: 12px;
-        }
-
-        html {
-          scroll-behavior: smooth;
-        }
-
-        body {
-          background-color: var(--bg-primary);
-          color: var(--text-primary);
-          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
-          font-size: 16px;
-          line-height: 1.6;
-          font-weight: 400;
-        }
-
-        .container {
-          max-width: 1200px;
-          margin: 0 auto;
-          padding: 40px 20px;
-        }
-
-        /* ===== HEADER ===== */
-        header {
-          text-align: center;
-          margin-bottom: 80px;
-          padding-top: 60px;
-        }
-
-        h1 {
-          font-size: 48px;
-          font-weight: 700;
-          letter-spacing: -0.5px;
-          margin-bottom: 16px;
-          background: linear-gradient(135deg, var(--accent-light) 0%, var(--accent) 100%);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-        }
-
-        .subtitle {
-          color: var(--text-secondary);
-          font-size: 18px;
-          font-weight: 400;
-          max-width: 600px;
-          margin: 0 auto;
-        }
-
-        /* ===== DASHBOARD GRID ===== */
-        .dashboard-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-          gap: 32px;
-          margin-bottom: 60px;
-        }
-
-        .feature-card {
-          background-color: var(--bg-secondary);
-          border: 1px solid var(--border);
-          border-radius: var(--radius);
-          padding: 40px 32px;
-          text-align: center;
-          transition: all 0.3s ease;
-          cursor: pointer;
-          position: relative;
-          overflow: hidden;
-          text-decoration: none;
-          color: inherit;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-        }
-
-        .feature-card::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: -100%;
-          width: 100%;
-          height: 100%;
-          background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(99, 102, 241, 0) 100%);
-          transition: left 0.3s ease;
-          pointer-events: none;
-        }
-
-        .feature-card:hover {
-          border-color: var(--accent);
-          background-color: rgba(99, 102, 241, 0.05);
-          transform: translateY(-8px);
-          box-shadow: 0 12px 24px rgba(99, 102, 241, 0.15);
-        }
-
-        .feature-card:hover::before {
-          left: 100%;
-        }
-
-        .feature-icon {
-          font-size: 64px;
-          margin-bottom: 24px;
-          display: block;
-        }
-
-        .feature-title {
-          font-size: 24px;
-          font-weight: 700;
-          margin-bottom: 12px;
-          color: var(--text-primary);
-          letter-spacing: -0.5px;
-        }
-
-        .feature-description {
-          color: var(--text-secondary);
-          font-size: 14px;
-          line-height: 1.6;
-          margin-bottom: 24px;
-          flex-grow: 1;
-        }
-
-        .feature-link {
-          display: inline-flex;
-          align-items: center;
-          gap: 8px;
-          padding: 12px 24px;
-          background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
-          color: white;
-          border: none;
-          border-radius: 8px;
-          font-size: 14px;
-          font-weight: 600;
-          cursor: pointer;
-          transition: all 0.3s ease;
-          text-transform: uppercase;
-          letter-spacing: 0.5px;
-          text-decoration: none;
-        }
-
-        .feature-link:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
-        }
-
-        /* ===== STATS SECTION ===== */
-        .stats-section {
-          background-color: var(--bg-secondary);
-          border: 1px solid var(--border);
-          border-radius: var(--radius);
-          padding: 40px;
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-          gap: 32px;
-          text-align: center;
-        }
-
-        .stat-item h3 {
-          font-size: 32px;
-          font-weight: 700;
-          color: var(--accent-light);
-          margin-bottom: 8px;
-        }
-
-        .stat-item p {
-          color: var(--text-secondary);
-          font-size: 14px;
-          text-transform: uppercase;
-          letter-spacing: 0.5px;
-        }
-
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 768px) {
-          h1 {
-            font-size: 36px;
-          }
-
-          .subtitle {
-            font-size: 16px;
-          }
-
-          header {
-            margin-bottom: 50px;
-            padding-top: 30px;
-          }
-
-          .dashboard-grid {
-            gap: 24px;
-          }
-
-          .feature-card {
-            padding: 30px 24px;
-          }
-
-          .feature-icon {
-            font-size: 48px;
-            margin-bottom: 16px;
-          }
-
-          .feature-title {
-            font-size: 20px;
-          }
-        }
-
-        @media (max-width: 480px) {
-          h1 {
-            font-size: 28px;
-          }
-
-          .subtitle {
-            font-size: 14px;
-          }
-
-          header {
-            margin-bottom: 40px;
-            padding-top: 20px;
-          }
-
-          .dashboard-grid {
-            grid-template-columns: 1fr;
-            gap: 16px;
-          }
-
-          .feature-icon {
-            font-size: 40px;
-            margin-bottom: 12px;
-          }
-
-          .stats-section {
-            grid-template-columns: 1fr;
-            gap: 24px;
-          }
-        }
-    </style>
 </head>
 <body>
     <div class="container">
         <!-- Header -->
         <header>
             <h1>🚀 AI Prediction Hub</h1>
-            <p class="subtitle">Powerful machine learning tools for classification and sentiment analysis</p>
+            <p class="subtitle">Comprehensive machine learning platform for classification, clustering, and regression analysis</p>
         </header>
 
-        <!-- Features Grid -->
-        <div class="dashboard-grid">
-            <!-- Mammals Card -->
-            <a href="{{ route('mammals') }}" class="feature-card">
-                <span class="feature-icon">🐾</span>
-                <h2 class="feature-title">Mammals Detection <br>(CNN-EfficientNetB0)</h2>
-                <p class="feature-description">Identify and classify different mammal species from images. Get instant predictions with confidence scores.</p>
-                <button class="feature-link">Go to Mammals →</button>
-            </a>
+        <!-- Slider Navigation -->
+        <div class="slider-nav">
+            <button class="slider-btn active" onclick="changeSlide(0)">
+                📊 Classification
+            </button>
+            <button class="slider-btn" onclick="changeSlide(1)">
+                🎯 Clustering
+            </button>
+            <button class="slider-btn" onclick="changeSlide(2)">
+                📈 Regression
+            </button>
+        </div>
 
-            <!-- Place Card -->
-            <a href="{{ route('place') }}" class="feature-card">
-                <span class="feature-icon">🏞️</span>
-                <h2 class="feature-title">Place Classification <br>(CNN-ResNet50)</h2>
-                <p class="feature-description">Classify images into different place categories. Perfect for location-based content analysis.</p>
-                <button class="feature-link">Go to Places →</button>
-            </a>
+        <!-- Slider Container -->
+        <div class="slider-container">
+            <div class="slider-content" id="sliderContent">
+                
+                <!-- CLASSIFICATION PANEL -->
+                <div class="slider-panel">
+                    <div class="category-header">
+                        <h2 class="category-title">Classification Models</h2>
+                        <p class="category-description">Predict categorical outcomes using advanced neural networks</p>
+                    </div>
+                    
+                    <div class="dashboard-grid">
+                        <!-- Mammals Card -->
+                        <a href="{{ route('mammals') }}" class="feature-card">
+                            <div class="feature-badge">CNN Model</div>
+                            <span class="feature-icon">🐾</span>
+                            <h2 class="feature-title">Mammals Detection</h2>
+                            <p class="feature-description">Identify and classify different mammal species using EfficientNetB0 architecture with high accuracy.</p>
+                            <button class="feature-link">Explore Model →</button>
+                        </a>
 
-            <!-- Sentiment Card -->
-            <a href="{{ route('sentiment') }}" class="feature-card">
-                <span class="feature-icon">💬</span>
-                <h2 class="feature-title">Sentiment Analysis <br>(CNN-LSTM)</h2>
-                <p class="feature-description">Analyze text sentiment and understand emotions. Detect positive, negative, or neutral content.</p>
-                <button class="feature-link">Go to Sentiment →</button>
-            </a>
+                        <!-- Place Card -->
+                        <a href="{{ route('place') }}" class="feature-card">
+                            <div class="feature-badge">CNN Model</div>
+                            <span class="feature-icon">🏞️</span>
+                            <h2 class="feature-title">Place Classification</h2>
+                            <p class="feature-description">Classify images into location categories using ResNet50 for robust feature extraction.</p>
+                            <button class="feature-link">Explore Model →</button>
+                        </a>
+
+                        <!-- Sentiment Card -->
+                        <a href="{{ route('sentiment') }}" class="feature-card">
+                            <div class="feature-badge">Hybrid Model</div>
+                            <span class="feature-icon">💬</span>
+                            <h2 class="feature-title">Sentiment Analysis</h2>
+                            <p class="feature-description">Analyze text emotions using CNN-LSTM architecture for context-aware predictions.</p>
+                            <button class="feature-link">Explore Model →</button>
+                        </a>
+
+                    </div>
+                </div>
+
+                <!-- CLUSTERING PANEL -->
+                <div class="slider-panel">
+                    <div class="category-header">
+                        <h2 class="category-title">Clustering Algorithms</h2>
+                        <p class="category-description">Discover hidden patterns and group similar data points</p>
+                    </div>
+                    
+                    <div class="dashboard-grid">
+                        <!-- K-Means Card -->
+                        <a href="{{ route('spending_score') }}" class="feature-card">
+                            <div class="feature-badge">Spending</div>
+                            <span class="feature-icon">⭕</span>
+                            <h2 class="feature-title">K-Means Clustering</h2>
+                            <p class="feature-description">Fast and efficient clustering for large datasets with clear centroid-based groupings.</p>
+                            <button class="feature-link">Explore Model →</button>
+                        </a>
+
+                        <!-- Hierarchical Card -->
+                        <!-- <a href="#" class="feature-card">
+                            <div class="feature-badge">Hierarchical</div>
+                            <span class="feature-icon">🌳</span>
+                            <h2 class="feature-title">Hierarchical Clustering</h2>
+                            <p class="feature-description">Build dendrograms to understand data relationships at multiple granularity levels.</p>
+                            <button class="feature-link">Explore Model →</button>
+                        </a> -->
+
+                        <!-- DBSCAN Card -->
+                        <!-- <a href="#" class="feature-card">
+                            <div class="feature-badge">Density-Based</div>
+                            <span class="feature-icon">🔵</span>
+                            <h2 class="feature-title">DBSCAN</h2>
+                            <p class="feature-description">Discover clusters of arbitrary shapes and identify outliers in noisy datasets.</p>
+                            <button class="feature-link">Explore Model →</button>
+                        </a> -->
+
+                        <!-- Customer Segmentation -->
+                        <!-- <a href="#" class="feature-card">
+                            <div class="feature-badge">Business Analytics</div>
+                            <span class="feature-icon">👥</span>
+                            <h2 class="feature-title">Customer Segmentation</h2>
+                            <p class="feature-description">Segment customers based on behavior patterns for targeted marketing strategies.</p>
+                            <button class="feature-link">Explore Model →</button>
+                        </a> -->
+                    </div>
+                </div>
+
+                <!-- REGRESSION PANEL -->
+                <div class="slider-panel">
+                    <div class="category-header">
+                        <h2 class="category-title">Regression Models</h2>
+                        <p class="category-description">Predict continuous numerical values with precision</p>
+                    </div>
+                    
+                    <div class="dashboard-grid">
+                        <!-- Linear Regression Card -->
+                        <!-- <a href="#" class="feature-card">
+                            <div class="feature-badge">Linear Model</div>
+                            <span class="feature-icon">📉</span>
+                            <h2 class="feature-title">Linear Regression</h2>
+                            <p class="feature-description">Simple yet powerful model for predicting linear relationships in your data.</p>
+                            <button class="feature-link">Explore Model →</button>
+                        </a> -->
+
+                        <!-- Polynomial Regression Card -->
+                        <!-- <a href="#" class="feature-card">
+                            <div class="feature-badge">Non-Linear Model</div>
+                            <span class="feature-icon">〰️</span>
+                            <h2 class="feature-title">Polynomial Regression</h2>
+                            <p class="feature-description">Capture complex non-linear patterns with polynomial feature transformation.</p>
+                            <button class="feature-link">Explore Model →</button>
+                        </a> -->
+
+                        <!-- Price Prediction Card -->
+                        <!-- <a href="#" class="feature-card">
+                            <div class="feature-badge">Neural Network</div>
+                            <span class="feature-icon">💰</span>
+                            <h2 class="feature-title">Price Prediction</h2>
+                            <p class="feature-description">Forecast prices using deep learning for accurate market value estimation.</p>
+                            <button class="feature-link">Explore Model →</button>
+                        </a> -->
+
+                        <!-- Time Series Card -->
+                        <!-- <a href="#" class="feature-card">
+                            <div class="feature-badge">Sequential Model</div>
+                            <span class="feature-icon">⏱️</span>
+                            <h2 class="feature-title">Time Series Forecasting</h2>
+                            <p class="feature-description">Predict future trends based on historical temporal data patterns.</p>
+                            <button class="feature-link">Explore Model →</button>
+                        </a> -->
+                    </div>
+                </div>
+
+            </div>
         </div>
 
         <!-- Stats Section -->
         <div class="stats-section">
             <div class="stat-item">
-                <h3>3</h3>
+                <h3>12+</h3>
                 <p>ML Models</p>
             </div>
             <div class="stat-item">
@@ -300,9 +176,44 @@
             </div>
             <div class="stat-item">
                 <h3>⚡</h3>
-                <p>Instant Results</p>
+                <p>Real-time</p>
+            </div>
+            <div class="stat-item">
+                <h3>🎯</h3>
+                <p>Precise Results</p>
             </div>
         </div>
     </div>
+
+    <script>
+        let currentSlide = 0;
+
+        function changeSlide(index) {
+            currentSlide = index;
+            const sliderContent = document.getElementById('sliderContent');
+            const buttons = document.querySelectorAll('.slider-btn');
+            
+            // Update slider position
+            sliderContent.style.transform = `translateX(-${index * 33.333}%)`;
+            
+            // Update active button
+            buttons.forEach((btn, i) => {
+                if (i === index) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+        }
+
+        // Optional: Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft' && currentSlide > 0) {
+                changeSlide(currentSlide - 1);
+            } else if (e.key === 'ArrowRight' && currentSlide < 2) {
+                changeSlide(currentSlide + 1);
+            }
+        });
+    </script>
 </body>
 </html>

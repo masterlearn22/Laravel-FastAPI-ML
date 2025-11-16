@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class MammalsPrediction extends Model
 {
+    // Sesuaikan dengan nama tabel di migration
+    protected $table = 'mammal_predictions';
+
     protected $fillable = [
         'image_path',
         'label',

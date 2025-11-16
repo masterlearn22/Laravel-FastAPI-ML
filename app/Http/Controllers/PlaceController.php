@@ -12,7 +12,7 @@ class PlaceController extends Controller
     {
         $history = PlacePrediction::orderBy('created_at', 'desc')->get();
 
-        return view('place_classification', [
+        return view('classification.place_classification', [
             'history' => $history,
             'result' => session('result'),
             'image'  => session('image'),

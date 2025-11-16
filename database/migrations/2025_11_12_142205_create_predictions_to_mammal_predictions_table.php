@@ -10,8 +10,8 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-{
-    Schema::create('predictions', function (Blueprint $table) {
+    {
+        Schema::create('mammal_predictions', function (Blueprint $table) {
         $table->id();
         $table->string('image_path');
         $table->string('label');
@@ -20,14 +20,13 @@ return new class extends Migration
         $table->json('top5_probs')->nullable();
         $table->timestamps();
     });
-}
-
+    }
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('predictions');
+         Schema::dropIfExists('mammal_predictions');        
     }
 };

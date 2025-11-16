@@ -17,7 +17,7 @@ class SentimentController extends Controller
         $text = session('text');
         $showResultButton = session('showResultButton');
 
-        return view('sentiment_classification', compact('history', 'result', 'text', 'showResultButton'));
+        return view('classification.sentiment_classification', compact('history', 'result', 'text', 'showResultButton'));
     }
 
     public function predict(Request $request)
