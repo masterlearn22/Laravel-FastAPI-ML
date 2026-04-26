@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 
-export default function Mammals() {
+export default function Mammals({ onBack }) {
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
   const [isPredicting, setIsPredicting] = useState(false);
@@ -57,6 +57,12 @@ export default function Mammals() {
 
   return (
     <div className="container">
+      <button 
+        onClick={onBack} 
+        style={{ background: 'transparent', border: 'none', color: '#a1a1aa', cursor: 'pointer', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px', fontWeight: '600' }}
+      >
+        &larr; Back to Models
+      </button>
       <div className="form-section">
         <h2 style={{marginBottom: '10px'}}>Prediksi Mamalia</h2>
         <p className="subtitle" style={{marginBottom: '20px'}}>Identifikasi spesies mamalia menggunakan AI (Mock Data)</p>

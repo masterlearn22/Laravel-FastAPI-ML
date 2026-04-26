@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export default function Sentiment() {
+export default function Sentiment({ onBack }) {
   const [text, setText] = useState('');
   const [isPredicting, setIsPredicting] = useState(false);
   const [result, setResult] = useState(null);
@@ -34,6 +34,12 @@ export default function Sentiment() {
 
   return (
     <div className="container">
+      <button 
+        onClick={onBack} 
+        style={{ background: 'transparent', border: 'none', color: '#a1a1aa', cursor: 'pointer', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px', fontWeight: '600' }}
+      >
+        &larr; Back to Models
+      </button>
       <div className="form-section">
         <h2 style={{marginBottom: '10px'}}>Analisis Sentimen</h2>
         <p className="subtitle" style={{marginBottom: '20px'}}>Analisis teks menggunakan AI (Mock Data)</p>
