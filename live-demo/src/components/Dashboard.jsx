@@ -1,27 +1,40 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BarChart2, Target, TrendingUp, Zap, CheckCircle } from 'lucide-react';
 
 export default function Dashboard({ onSelectModel }) {
+  const [activeCategory, setActiveCategory] = useState('classification');
+
   return (
     <div className="dashboard-container">
       {/* Top Nav Pills */}
       <div className="top-nav-pills">
-        <button className="nav-pill active">
+        <button 
+          className={`nav-pill ${activeCategory === 'classification' ? 'active' : ''}`}
+          onClick={() => setActiveCategory('classification')}
+        >
           <BarChart2 size={16} style={{marginRight: '8px'}} /> CLASSIFICATION
         </button>
-        <button className="nav-pill">
-          <Target size={16} style={{marginRight: '8px', color: '#ec4899'}} /> CLUSTERING
+        <button 
+          className={`nav-pill ${activeCategory === 'clustering' ? 'active' : ''}`}
+          onClick={() => setActiveCategory('clustering')}
+        >
+          <Target size={16} style={{marginRight: '8px', color: activeCategory === 'clustering' ? 'inherit' : '#ec4899'}} /> CLUSTERING
         </button>
-        <button className="nav-pill">
-          <TrendingUp size={16} style={{marginRight: '8px', color: '#6366f1'}} /> REGRESSION
+        <button 
+          className={`nav-pill ${activeCategory === 'regression' ? 'active' : ''}`}
+          onClick={() => setActiveCategory('regression')}
+        >
+          <TrendingUp size={16} style={{marginRight: '8px', color: activeCategory === 'regression' ? 'inherit' : '#6366f1'}} /> REGRESSION
         </button>
       </div>
 
-      {/* Header Banner */}
-      <div className="header-banner">
-        <h1 className="gradient-text">Classification Models</h1>
-        <p className="subtitle">Predict categorical outcomes using advanced neural networks</p>
-      </div>
+      {activeCategory === 'classification' && (
+        <>
+          {/* Header Banner */}
+          <div className="header-banner">
+            <h1 className="gradient-text">Classification Models</h1>
+            <p className="subtitle">Predict categorical outcomes using advanced neural networks</p>
+          </div>
 
       {/* Model Cards */}
       <div className="model-cards-grid">
@@ -58,6 +71,28 @@ export default function Dashboard({ onSelectModel }) {
           </button>
         </div>
       </div>
+      </>
+      )}
+
+      {activeCategory === 'clustering' && (
+        <div className="header-banner" style={{ padding: '80px 20px' }}>
+          <h1 className="gradient-text">Clustering Models</h1>
+          <p className="subtitle" style={{ marginBottom: '20px' }}>Discover hidden patterns and groupings in your data</p>
+          <div style={{ color: '#a1a1aa', fontSize: '14px', border: '1px dashed #27272a', padding: '20px', borderRadius: '12px', display: 'inline-block' }}>
+            🚀 Models coming soon...
+          </div>
+        </div>
+      )}
+
+      {activeCategory === 'regression' && (
+        <div className="header-banner" style={{ padding: '80px 20px' }}>
+          <h1 className="gradient-text">Regression Models</h1>
+          <p className="subtitle" style={{ marginBottom: '20px' }}>Predict continuous numeric values with high precision</p>
+          <div style={{ color: '#a1a1aa', fontSize: '14px', border: '1px dashed #27272a', padding: '20px', borderRadius: '12px', display: 'inline-block' }}>
+            🚀 Models coming soon...
+          </div>
+        </div>
+      )}
 
       {/* Stats Section */}
       <div className="stats-container">
